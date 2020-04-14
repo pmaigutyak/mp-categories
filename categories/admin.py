@@ -1,24 +1,51 @@
 
+from django.apps import apps
 from django.db import models
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from ckeditor.widgets import CKEditorWidget
-from modeltranslation.admin import TranslationAdmin
-
 from cap.decorators import short_description, template_list_item
 
 from categories.models import Category
+from categories import config
+
+
+def get_admin_base_class():
+
+    if apps.is_installed('modeltranslation'):
+        from modeltranslation.admin import TranslationAdmin
+        return TranslationAdmin
+
+    return admin.ModelAdmin
+
+
+def get_list_display_items():
+
+    result = ['name', 'product_count']
+
+    if config.IS_CATEGORY_LOGO_ENABLED:
+        result += ['get_preview']
+
+    return result
+
+
+def get_formfield_overrides():
+
+    if apps.is_installed('ckeditor'):
+        from ckeditor.widgets import CKEditorWidget
+        return {
+            models.TextField: {'widget': CKEditorWidget}
+        }
+
+    return {}
 
 
 @admin.register(Category)
-class CategoryAdmin(TranslationAdmin):
+class CategoryAdmin(get_admin_base_class()):
 
-    list_display = ['name', 'product_count', 'get_preview']
+    list_display = get_list_display_items()
 
-    formfield_overrides = {
-        models.TextField: {'widget': CKEditorWidget}
-    }
+    formfield_overrides = get_formfield_overrides()
 
     @template_list_item('admin/list_item_preview.html', _('Preview'))
     def get_preview(self, item):

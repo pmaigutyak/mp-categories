@@ -2,6 +2,27 @@
 
 from django.db import migrations, models
 
+from categories import config
+
+
+def get_fields():
+
+    fields = [
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('name', models.CharField(max_length=255, verbose_name='Category name')),
+    ]
+
+    if config.IS_CATEGORY_LOGO_ENABLED:
+        fields += [('logo', models.ImageField(blank=True, max_length=255, null=True, upload_to='categories', verbose_name='Logo'))]
+
+    if config.IS_CATEGORY_ICON_ENABLED:
+        fields += [('icon', models.CharField(blank=True, max_length=255, verbose_name='Icon'))]
+
+    if config.IS_CATEGORY_DESCRIPTION_ENABLED:
+        fields += [('description', models.TextField(blank=True, max_length=4096, verbose_name='Description'))]
+
+    return fields
+
 
 class Migration(migrations.Migration):
 
@@ -13,13 +34,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.CreateModel(
             name='Category',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, verbose_name='Category name')),
-                ('logo', models.ImageField(blank=True, max_length=255, null=True, upload_to='categories', verbose_name='Logo')),
-                ('icon', models.CharField(blank=True, max_length=255, verbose_name='Icon')),
-                ('description', models.TextField(blank=True, max_length=4096, verbose_name='Description')),
-            ],
+            fields=get_fields(),
             options={
                 'verbose_name': 'Category',
                 'verbose_name_plural': 'Categories',

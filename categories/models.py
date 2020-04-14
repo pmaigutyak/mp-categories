@@ -5,6 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from slugify import slugify_url
 
+from categories import config
+
 
 class Category(models.Model):
 
@@ -12,22 +14,25 @@ class Category(models.Model):
         _('Category name'),
         max_length=255)
 
-    logo = models.ImageField(
-        _('Logo'),
-        upload_to='categories',
-        blank=True,
-        null=True,
-        max_length=255)
+    if config.IS_CATEGORY_LOGO_ENABLED:
+        logo = models.ImageField(
+            _('Logo'),
+            upload_to='categories',
+            blank=True,
+            null=True,
+            max_length=255)
 
-    icon = models.CharField(
-        _('Icon'),
-        max_length=255,
-        blank=True)
+    if config.IS_CATEGORY_ICON_ENABLED:
+        icon = models.CharField(
+            _('Icon'),
+            max_length=255,
+            blank=True)
 
-    description = models.TextField(
-        _('Description'),
-        blank=True,
-        max_length=4096)
+    if config.IS_CATEGORY_DESCRIPTION_ENABLED:
+        description = models.TextField(
+            _('Description'),
+            blank=True,
+            max_length=4096)
 
     def __str__(self):
         return self.name
@@ -37,7 +42,7 @@ class Category(models.Model):
 
     @property
     def slug(self):
-        return slugify_url(self.name, separator='_')
+        return slugify_url(self.name or 'category', separator='_')
 
     class Meta:
         verbose_name = _('Category')
