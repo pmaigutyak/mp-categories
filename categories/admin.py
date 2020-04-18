@@ -21,7 +21,10 @@ def get_admin_base_class():
 
 def get_list_display_items():
 
-    result = ['name', 'product_count']
+    result = ['name']
+
+    if hasattr(Category, 'products'):
+        result += ['product_count']
 
     if config.IS_CATEGORY_LOGO_ENABLED:
         result += ['get_preview']

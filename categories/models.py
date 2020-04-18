@@ -22,6 +22,12 @@ class Category(models.Model):
             null=True,
             max_length=255)
 
+    if config.IS_CATEGORY_CODE_ENABLED:
+        code = models.CharField(
+            _('Code'),
+            max_length=255,
+            blank=True)
+
     if config.IS_CATEGORY_ICON_ENABLED:
         icon = models.CharField(
             _('Icon'),
