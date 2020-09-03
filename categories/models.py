@@ -44,13 +44,17 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse_lazy('products:list', args=[self.slug, self.id])
+        try:
+            return reverse_lazy('products:list', args=[self.slug, self.id])
+        except Exception:
+            return ''
 
     @property
     def slug(self):
         return slugify_url(self.name or 'category', separator='_')
 
     class Meta:
+        ordering = ('name', )
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
 
