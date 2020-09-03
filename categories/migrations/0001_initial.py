@@ -15,9 +15,6 @@ def get_fields():
     if config.IS_CATEGORY_LOGO_ENABLED:
         fields += [('logo', models.ImageField(blank=True, max_length=255, null=True, upload_to='categories', verbose_name='Logo'))]
 
-    if config.IS_CATEGORY_CODE_ENABLED:
-        fields += [('code', models.CharField(blank=True, max_length=255, verbose_name='Code'))]
-
     if config.IS_CATEGORY_ICON_ENABLED:
         fields += [('icon', models.CharField(blank=True, max_length=255, verbose_name='Icon'))]
 
