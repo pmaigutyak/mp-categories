@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-24 22:34+0200\n"
+"POT-Creation-Date: 2020-11-22 11:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,34 +20,42 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: __init__.py:9 models.py:44
+#: categories/__init__.py:9 categories/models.py:54
 msgid "Categories"
 msgstr "Категории"
 
-#: admin.py:23
+#: categories/admin.py:42
 msgid "Preview"
 msgstr "Просмотр"
 
-#: admin.py:27
+#: categories/admin.py:46
 msgid "Product count"
 msgstr "Количество товаров"
 
-#: models.py:12
+#: categories/models.py:12
 msgid "Category name"
 msgstr "Название категории"
 
-#: models.py:16
+#: categories/models.py:16
+msgid "Category title"
+msgstr "Заголовок"
+
+#: categories/models.py:21
 msgid "Logo"
 msgstr "Логотип"
 
-#: models.py:23
+#: categories/models.py:28
+msgid "Code"
+msgstr "Код"
+
+#: categories/models.py:33
 msgid "Icon"
 msgstr "Иконка"
 
-#: models.py:28
+#: categories/models.py:38
 msgid "Description"
 msgstr "Описание"
 
-#: models.py:43 models.py:52
+#: categories/models.py:53 categories/models.py:62
 msgid "Category"
 msgstr "Категория"

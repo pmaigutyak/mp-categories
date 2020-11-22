@@ -5,8 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from slugify import slugify_url
 
-from categories import config
-
 
 class Category(models.Model):
 
@@ -14,47 +12,44 @@ class Category(models.Model):
         _('Category name'),
         max_length=255)
 
-    if config.IS_CATEGORY_LOGO_ENABLED:
-        logo = models.ImageField(
-            _('Logo'),
-            upload_to='categories',
-            blank=True,
-            null=True,
-            max_length=255)
+    title = models.CharField(
+        _('Category title'),
+        max_length=255,
+        blank=True)
 
-    if config.IS_CATEGORY_CODE_ENABLED:
-        code = models.CharField(
-            _('Code'),
-            max_length=255,
-            blank=True)
+    logo = models.ImageField(
+        _('Logo'),
+        upload_to='categories',
+        blank=True,
+        null=True,
+        max_length=255)
 
-    if config.IS_CATEGORY_ICON_ENABLED:
-        icon = models.CharField(
-            _('Icon'),
-            max_length=255,
-            blank=True)
+    code = models.CharField(
+        _('Code'),
+        max_length=255,
+        blank=True)
 
-    if config.IS_CATEGORY_DESCRIPTION_ENABLED:
-        description = models.TextField(
-            _('Description'),
-            blank=True,
-            max_length=4096)
+    icon = models.CharField(
+        _('Icon'),
+        max_length=255,
+        blank=True)
+
+    description = models.TextField(
+        _('Description'),
+        blank=True,
+        max_length=4096)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        try:
-            return reverse_lazy('products:list', args=[self.slug, self.id])
-        except Exception:
-            return ''
+        return reverse_lazy('products:list', args=[self.slug, self.id])
 
     @property
     def slug(self):
         return slugify_url(self.name or 'category', separator='_')
 
     class Meta:
-        ordering = ('name', )
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
 

@@ -4,32 +4,11 @@ from django.db import models
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from modeltranslation.admin import TranslationAdmin
+from modeltranslation.utils import get_translation_fields
 from cap.decorators import short_description, template_list_item
 
 from categories.models import Category
-from categories import config
-
-
-def get_admin_base_class():
-
-    if apps.is_installed('modeltranslation'):
-        from modeltranslation.admin import TranslationAdmin
-        return TranslationAdmin
-
-    return admin.ModelAdmin
-
-
-def get_list_display_items():
-
-    result = ['name']
-
-    if hasattr(Category, 'products'):
-        result += ['product_count']
-
-    if config.IS_CATEGORY_LOGO_ENABLED:
-        result += ['get_preview']
-
-    return result
 
 
 def get_formfield_overrides():
@@ -44,9 +23,27 @@ def get_formfield_overrides():
 
 
 @admin.register(Category)
-class CategoryAdmin(get_admin_base_class()):
+class CategoryAdmin(TranslationAdmin):
 
-    list_display = get_list_display_items()
+    list_display = (
+        ['id'] +
+        get_translation_fields('name') +
+        get_translation_fields('title') +
+        ['code', 'icon', 'product_count', 'get_preview']
+    )
+
+    list_editable = (
+        get_translation_fields('title') +
+        get_translation_fields('name')
+    )
+
+    fields = (
+        tuple(get_translation_fields('name')),
+        tuple(get_translation_fields('title')),
+        ('code', 'icon', ),
+        'logo',
+        tuple(get_translation_fields('description')),
+    )
 
     formfield_overrides = get_formfield_overrides()
 
